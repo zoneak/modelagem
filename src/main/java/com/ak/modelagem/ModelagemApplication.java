@@ -13,6 +13,7 @@ import com.ak.modelagem.domain.Cidade;
 import com.ak.modelagem.domain.Cliente;
 import com.ak.modelagem.domain.Endereco;
 import com.ak.modelagem.domain.Estado;
+import com.ak.modelagem.domain.ItemPedido;
 import com.ak.modelagem.domain.PagamentoComBoleto;
 import com.ak.modelagem.domain.PagamentoComCartao;
 import com.ak.modelagem.domain.Pedido;
@@ -24,6 +25,7 @@ import com.ak.modelagem.repositories.CidadeRepository;
 import com.ak.modelagem.repositories.ClienteRepository;
 import com.ak.modelagem.repositories.EnderecoRepository;
 import com.ak.modelagem.repositories.EstadoRepository;
+import com.ak.modelagem.repositories.ItemPedidoRepository;
 import com.ak.modelagem.repositories.PagamentoRepository;
 import com.ak.modelagem.repositories.PedidoRepository;
 import com.ak.modelagem.repositories.ProdutoRepository;
@@ -54,6 +56,9 @@ public class ModelagemApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(ModelagemApplication.class, args);
@@ -118,6 +123,19 @@ public class ModelagemApplication implements CommandLineRunner {
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.0);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.0);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.0);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 	}
 
 }
