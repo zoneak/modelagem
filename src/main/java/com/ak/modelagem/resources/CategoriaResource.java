@@ -1,6 +1,8 @@
 package com.ak.modelagem.resources;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ak.modelagem.domain.Categoria;
+import com.ak.modelagem.dto.CategoriaDTO;
 import com.ak.modelagem.services.CategoriaService;
 
 @RestController
@@ -20,6 +23,13 @@ public class CategoriaResource {
 
 	@Autowired
 	private CategoriaService categoriaService;
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
+		List<Categoria> lista = categoriaService.findAll();
+		List<CategoriaDTO> listaDTO = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList()); // Transforma em lista de DTO
+		return ResponseEntity.ok().body(listaDTO);	
+	}
 	
 	@RequestMapping(value="/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Categoria> find(@PathVariable Long id) {

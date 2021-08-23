@@ -1,5 +1,6 @@
 package com.ak.modelagem.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,10 @@ public class CategoriaService {
 
 	@Autowired
 	private CategoriaRepository categoriaRepository;
+	
+	public List<Categoria> findAll() {
+		return categoriaRepository.findAll();
+	}
 	
 	public Categoria find(Long id) {
 		Optional<Categoria> obj = categoriaRepository.findById(id);
@@ -40,4 +45,5 @@ public class CategoriaService {
 			throw new DataIntegrityCustomException("Não é possível excluir uma categoria que possui produtos associados");
 		}
 	}
+
 }
