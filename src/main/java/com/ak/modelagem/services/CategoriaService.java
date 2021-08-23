@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.ak.modelagem.domain.Categoria;
+import com.ak.modelagem.dto.CategoriaDTO;
 import com.ak.modelagem.repositories.CategoriaRepository;
 import com.ak.modelagem.services.exceptions.DataIntegrityCustomException;
 import com.ak.modelagem.services.exceptions.ObjectNotFoundException;
@@ -52,6 +53,10 @@ public class CategoriaService {
 	public Page<Categoria> findPage(Integer page, Integer linesPerPage, String direction, String orderBy) {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return categoriaRepository.findAll(pageRequest);
+	}
+	
+	public Categoria fromDTO(CategoriaDTO objDTO) {
+		return new Categoria(objDTO.getId(), objDTO.getNome());
 	}
 
 }
