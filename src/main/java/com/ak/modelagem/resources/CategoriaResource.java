@@ -63,9 +63,7 @@ public class CategoriaResource {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDTO, @PathVariable Long id) {
-		Categoria obj = categoriaService.fromDTO(objDTO);
-		obj.setId(id);
-		obj = categoriaService.update(obj);
+		categoriaService.update(objDTO, id);
 		return ResponseEntity.noContent().build();
 	}
 	

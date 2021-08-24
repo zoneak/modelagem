@@ -11,6 +11,8 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.ak.modelagem.domain.Categoria;
+import com.ak.modelagem.domain.Categoria;
+import com.ak.modelagem.dto.CategoriaDTO;
 import com.ak.modelagem.dto.CategoriaDTO;
 import com.ak.modelagem.repositories.CategoriaRepository;
 import com.ak.modelagem.services.exceptions.DataIntegrityCustomException;
@@ -36,9 +38,14 @@ public class CategoriaService {
 		return categoriaRepository.save(obj); 
 	}
 
-	public Categoria update(Categoria obj) {
-		find(obj.getId());
-		return categoriaRepository.save(obj);
+	public Categoria update(CategoriaDTO objDTO, Long id) {
+		Categoria objDoBanco = find(id);
+		updateData(objDoBanco, objDTO);
+		return categoriaRepository.save(objDoBanco);
+	}
+
+	private void updateData(Categoria objDoBanco, CategoriaDTO objDTO) {
+		objDoBanco.setNome(objDTO.getNome());
 	}
 
 	public void delete(Long id) {
