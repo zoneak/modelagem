@@ -3,7 +3,9 @@ package com.ak.modelagem.dto;
 import java.io.Serializable;
 
 import com.ak.modelagem.domain.Cliente;
+import com.ak.modelagem.services.validation.ClienteUpdate;
 
+@ClienteUpdate
 public class ClienteDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
