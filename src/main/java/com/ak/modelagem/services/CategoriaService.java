@@ -11,8 +11,6 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.ak.modelagem.domain.Categoria;
-import com.ak.modelagem.domain.Categoria;
-import com.ak.modelagem.dto.CategoriaDTO;
 import com.ak.modelagem.dto.CategoriaDTO;
 import com.ak.modelagem.repositories.CategoriaRepository;
 import com.ak.modelagem.services.exceptions.DataIntegrityCustomException;
