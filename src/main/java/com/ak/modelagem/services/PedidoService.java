@@ -32,6 +32,9 @@ public class PedidoService {
 	private ProdutoService produtoService;
 	
 	@Autowired
+	private ClienteService clienteService;
+	
+	@Autowired
 	private BoletoService boletoService;
 	
 	public Pedido find(Long id) {
@@ -43,6 +46,7 @@ public class PedidoService {
 	public Pedido insert(Pedido obj) {
 		obj.setId(null);
 		obj.setInstante(new Date());
+		obj.setCliente(clienteService.find(obj.getCliente().getId()));
 		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		obj.getPagamento().setPedido(obj);
 		
@@ -55,10 +59,12 @@ public class PedidoService {
 		
 		for (ItemPedido i : obj.getItens()) {
 			i.setDesconto(0.0);
-			i.setPreco(produtoService.find(i.getProduto().getId()).getPreco());
+			i.setProduto(produtoService.find(i.getProduto().getId()));
+			i.setPreco(i.getProduto().getPreco());
 			i.setPedido(obj);
 		}
 		itemPedidoRepository.saveAll(obj.getItens());
+		System.out.println(obj);
 		
 		return obj;
 	}
