@@ -16,11 +16,14 @@ import org.springframework.stereotype.Service;
 import com.ak.modelagem.domain.Cidade;
 import com.ak.modelagem.domain.Cliente;
 import com.ak.modelagem.domain.Endereco;
+import com.ak.modelagem.domain.enums.Perfil;
 import com.ak.modelagem.domain.enums.TipoCliente;
 import com.ak.modelagem.dto.ClienteDTO;
 import com.ak.modelagem.dto.ClienteNewDTO;
 import com.ak.modelagem.repositories.ClienteRepository;
 import com.ak.modelagem.repositories.EnderecoRepository;
+import com.ak.modelagem.security.UserSpringSecurity;
+import com.ak.modelagem.services.exceptions.AuthorizationException;
 import com.ak.modelagem.services.exceptions.DataIntegrityCustomException;
 import com.ak.modelagem.services.exceptions.ObjectNotFoundException;
 
@@ -37,6 +40,12 @@ public class ClienteService {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	public Cliente find(Long id) {
+		UserSpringSecurity user = UserService.authenticated();
+		
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Optional<Cliente> obj = clienteRepository.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
